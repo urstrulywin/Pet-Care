@@ -11,23 +11,29 @@ const routes = [
 ];
 
 export default function Header() {
-
   const activeRoute = usePathname();
 
   return (
-    <header className="flex items-center justify-between p-6 border-b-2 border-white/10">
-      <Logo/>
+    <header className="flex items-center justify-between p-4 border-b-2 border-white/10">
+      <Logo />
       <nav>
         <ul className="flex gap-6">
           {routes.map((route) => (
             <li key={route.path}>
-              <Link className={cn("font-medium text-white/80 hover:text-white focus:text-white transition", 
-                activeRoute === route.path && "text-white bg-black/20 px-3 py-1 rounded-lg"
-              )} href={route.path}>{route.name}</Link>
+              <Link
+                className={cn(
+                  "font-medium text-white/80 hover:text-white focus:text-white transition",
+                  activeRoute === route.path &&
+                    "text-white bg-black/20 px-3 py-1 rounded-lg",
+                )}
+                href={route.path}
+              >
+                {route.name}
+              </Link>
             </li>
           ))}
         </ul>
       </nav>
     </header>
-  )
+  );
 }

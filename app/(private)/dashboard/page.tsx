@@ -9,13 +9,13 @@ import Stats from "@/components/stats";
 export default async function Page() {
   return (
     <main>
-      <div className="flex items-center justify-between text-white py-8">
+      <div className="flex items-center justify-between text-white py-6">
         <Branding />
 
         <Stats />
       </div>
 
-      <div className="grid md:grid-cols-3 md:grid-rows-[45px_1fr] grid-rows-[45px_300px_500px] gap-4 md:h-150">
+      <div className="grid md:grid-cols-3 md:grid-rows-[45px_1fr] grid-rows-[45px_1fr_1fr] gap-4 h-120">
         <div className="md:row-start-1 md:row-span-1 md:col-start-1 md:col-span-1">
           <SearchForm />
         </div>
