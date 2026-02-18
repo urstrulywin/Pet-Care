@@ -1,11 +1,11 @@
 import Image from "next/image";
-import logo from "@/public/logo.png";
+import logo from "@/public/logo.svg";
 import Link from "next/link";
 
 export default function Logo() {
   return (
     <Link href="/">
-      <Image 
+      <Image
         src={logo}
         alt="Logo"
         width={48}
@@ -13,5 +13,5 @@ export default function Logo() {
         className="rounded-full"
       />
     </Link>
-  )
+  );
 }

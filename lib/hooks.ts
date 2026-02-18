@@ -17,7 +17,7 @@ export function useSearchContext() {
 
   if (!context) {
     throw new Error(
-      "useSearchContext must be used within a SearchContextProvider"
+      "useSearchContext must be used within a SearchContextProvider",
     );
   }
 
