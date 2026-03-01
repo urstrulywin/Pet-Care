@@ -5,10 +5,15 @@ import Link from "next/link";
 export default function SignUp() {
   return (
     <>
-      <H1 className="text-center">Sign Up</H1>
-      <AuthForm />
-      <p>
-        Already have an account? <Link href={"/login"}>Log In</Link>
+      <H1 className="mb-5 text-center">Sign Up</H1>
+
+      <AuthForm type="signUp" />
+
+      <p className="mt-6 text-sm text-zinc-500">
+        Already have an account?{" "}
+        <Link href="/login" className="font-medium">
+          Log in
+        </Link>
       </p>
     </>
   );

@@ -4,14 +4,16 @@ import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import PetContextProvider from "@/contexts/pet-ctx-prov";
 import SearchContextProvider from "@/contexts/search-ctx-prov";
-import { prisma } from "@/lib/prisma";
+import { checkAuth, getPets } from "@/lib/server-utils";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pets = await prisma.pet.findMany();
+  const session = await checkAuth();
+
+  const pets = await getPets(session.user.id);
 
   return (
     <>

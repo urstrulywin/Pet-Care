@@ -16,6 +16,9 @@ type TPetContext = {
   selectedPetId: Pet["id"] | null;
   selectedPet: Pet | undefined;
   numberOfPets: number;
+  isFormOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
   handleAddPet: (newPet: PetEssentials) => Promise<void>;
   handleEditPet: (petId: Pet["id"], newPetData: PetEssentials) => Promise<void>;
   handleCheckoutPet: (id: Pet["id"]) => Promise<void>;
@@ -50,6 +53,11 @@ export default function PetContextProvider({
     },
   );
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // helpers
+  const openModal = () => setIsFormOpen(true);
+  const closeModal = () => setIsFormOpen(false);
 
   // derived state
   const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetId);
@@ -65,6 +73,9 @@ export default function PetContextProvider({
       toast.warning(error.message);
       return;
     }
+    if (!error) {
+      closeModal();
+    }
   };
 
   const handleEditPet = async (petId: Pet["id"], newPetData: PetEssentials) => {
@@ -75,6 +86,9 @@ export default function PetContextProvider({
     if (error) {
       toast.warning(error.message);
       return;
+    }
+    if (!error) {
+      closeModal();
     }
   };
   const handleCheckoutPet = async (petId: Pet["id"]) => {
@@ -99,6 +113,9 @@ export default function PetContextProvider({
         selectedPetId,
         selectedPet,
         numberOfPets,
+        isFormOpen,
+        openModal,
+        closeModal,
         handleAddPet,
         handleEditPet,
         handleCheckoutPet,

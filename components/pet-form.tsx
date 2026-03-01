@@ -12,14 +12,11 @@ import { z } from "zod";
 
 type PetFormProps = {
   actionType: "add" | "edit";
-  onFormSubmission: () => void;
 };
 
-export default function PetForm({
-  actionType,
-  onFormSubmission,
-}: PetFormProps) {
-  const { handleAddPet, handleEditPet, selectedPet } = usePetContext();
+export default function PetForm({ actionType }: PetFormProps) {
+  const { handleAddPet, handleEditPet, selectedPet, closeModal } =
+    usePetContext();
 
   const {
     register,
@@ -28,13 +25,16 @@ export default function PetForm({
     formState: { errors },
   } = useForm<z.input<typeof petFormSchema>, z.output<typeof petFormSchema>>({
     resolver: zodResolver(petFormSchema),
-    defaultValues: {
-      name: selectedPet?.name || "",
-      ownerName: selectedPet?.ownerName || "",
-      imageUrl: selectedPet?.imageUrl || "",
-      age: selectedPet?.age ?? undefined,
-      notes: selectedPet?.notes || "",
-    },
+    defaultValues:
+      actionType === "edit"
+        ? {
+            name: selectedPet?.name || "",
+            ownerName: selectedPet?.ownerName || "",
+            imageUrl: selectedPet?.imageUrl || "",
+            age: selectedPet?.age ?? undefined,
+            notes: selectedPet?.notes || "",
+          }
+        : undefined,
   });
 
   return (
@@ -43,7 +43,7 @@ export default function PetForm({
         const result = await trigger();
         if (!result) return;
 
-        onFormSubmission();
+        closeModal();
 
         const petData = petFormSchema.parse(getValues());
 

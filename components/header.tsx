@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const routes = [
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "Account", path: "/account" },
+  { name: "Dashboard", path: "/app/dashboard" },
+  { name: "Account", path: "/app/account" },
 ];
 
 export default function Header() {

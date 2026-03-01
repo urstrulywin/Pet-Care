@@ -41,6 +41,7 @@ export type PetMinAggregateOutputType = {
   imageUrl: string | null
   age: number | null
   notes: string | null
+  userId: string | null
   updatedAt: Date | null
   createdAt: Date | null
 }
@@ -52,6 +53,7 @@ export type PetMaxAggregateOutputType = {
   imageUrl: string | null
   age: number | null
   notes: string | null
+  userId: string | null
   updatedAt: Date | null
   createdAt: Date | null
 }
@@ -63,6 +65,7 @@ export type PetCountAggregateOutputType = {
   imageUrl: number
   age: number
   notes: number
+  userId: number
   updatedAt: number
   createdAt: number
   _all: number
@@ -84,6 +87,7 @@ export type PetMinAggregateInputType = {
   imageUrl?: true
   age?: true
   notes?: true
+  userId?: true
   updatedAt?: true
   createdAt?: true
 }
@@ -95,6 +99,7 @@ export type PetMaxAggregateInputType = {
   imageUrl?: true
   age?: true
   notes?: true
+  userId?: true
   updatedAt?: true
   createdAt?: true
 }
@@ -106,6 +111,7 @@ export type PetCountAggregateInputType = {
   imageUrl?: true
   age?: true
   notes?: true
+  userId?: true
   updatedAt?: true
   createdAt?: true
   _all?: true
@@ -204,6 +210,7 @@ export type PetGroupByOutputType = {
   imageUrl: string
   age: number
   notes: string
+  userId: string
   updatedAt: Date
   createdAt: Date
   _count: PetCountAggregateOutputType | null
@@ -238,8 +245,10 @@ export type PetWhereInput = {
   imageUrl?: Prisma.StringFilter<"Pet"> | string
   age?: Prisma.IntFilter<"Pet"> | number
   notes?: Prisma.StringFilter<"Pet"> | string
+  userId?: Prisma.StringFilter<"Pet"> | string
   updatedAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PetOrderByWithRelationInput = {
@@ -249,8 +258,10 @@ export type PetOrderByWithRelationInput = {
   imageUrl?: Prisma.SortOrder
   age?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PetWhereUniqueInput = Prisma.AtLeast<{
@@ -263,8 +274,10 @@ export type PetWhereUniqueInput = Prisma.AtLeast<{
   imageUrl?: Prisma.StringFilter<"Pet"> | string
   age?: Prisma.IntFilter<"Pet"> | number
   notes?: Prisma.StringFilter<"Pet"> | string
+  userId?: Prisma.StringFilter<"Pet"> | string
   updatedAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type PetOrderByWithAggregationInput = {
@@ -274,6 +287,7 @@ export type PetOrderByWithAggregationInput = {
   imageUrl?: Prisma.SortOrder
   age?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.PetCountOrderByAggregateInput
@@ -293,6 +307,7 @@ export type PetScalarWhereWithAggregatesInput = {
   imageUrl?: Prisma.StringWithAggregatesFilter<"Pet"> | string
   age?: Prisma.IntWithAggregatesFilter<"Pet"> | number
   notes?: Prisma.StringWithAggregatesFilter<"Pet"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Pet"> | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Pet"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pet"> | Date | string
 }
@@ -306,6 +321,7 @@ export type PetCreateInput = {
   notes: string
   updatedAt?: Date | string
   createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPetsInput
 }
 
 export type PetUncheckedCreateInput = {
@@ -315,6 +331,7 @@ export type PetUncheckedCreateInput = {
   imageUrl: string
   age: number
   notes: string
+  userId: string
   updatedAt?: Date | string
   createdAt?: Date | string
 }
@@ -328,6 +345,7 @@ export type PetUpdateInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPetsNestedInput
 }
 
 export type PetUncheckedUpdateInput = {
@@ -337,6 +355,7 @@ export type PetUncheckedUpdateInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -348,6 +367,7 @@ export type PetCreateManyInput = {
   imageUrl: string
   age: number
   notes: string
+  userId: string
   updatedAt?: Date | string
   createdAt?: Date | string
 }
@@ -370,8 +390,19 @@ export type PetUncheckedUpdateManyInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PetListRelationFilter = {
+  every?: Prisma.PetWhereInput
+  some?: Prisma.PetWhereInput
+  none?: Prisma.PetWhereInput
+}
+
+export type PetOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PetCountOrderByAggregateInput = {
@@ -381,6 +412,7 @@ export type PetCountOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   age?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -396,6 +428,7 @@ export type PetMaxOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   age?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -407,6 +440,7 @@ export type PetMinOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   age?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -415,8 +449,46 @@ export type PetSumOrderByAggregateInput = {
   age?: Prisma.SortOrder
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type PetCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput> | Prisma.PetCreateWithoutUserInput[] | Prisma.PetUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutUserInput | Prisma.PetCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PetCreateManyUserInputEnvelope
+  connect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+}
+
+export type PetUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput> | Prisma.PetCreateWithoutUserInput[] | Prisma.PetUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutUserInput | Prisma.PetCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PetCreateManyUserInputEnvelope
+  connect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+}
+
+export type PetUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput> | Prisma.PetCreateWithoutUserInput[] | Prisma.PetUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutUserInput | Prisma.PetCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PetUpsertWithWhereUniqueWithoutUserInput | Prisma.PetUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PetCreateManyUserInputEnvelope
+  set?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  disconnect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  delete?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  connect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  update?: Prisma.PetUpdateWithWhereUniqueWithoutUserInput | Prisma.PetUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PetUpdateManyWithWhereWithoutUserInput | Prisma.PetUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PetScalarWhereInput | Prisma.PetScalarWhereInput[]
+}
+
+export type PetUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput> | Prisma.PetCreateWithoutUserInput[] | Prisma.PetUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutUserInput | Prisma.PetCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PetUpsertWithWhereUniqueWithoutUserInput | Prisma.PetUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PetCreateManyUserInputEnvelope
+  set?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  disconnect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  delete?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  connect?: Prisma.PetWhereUniqueInput | Prisma.PetWhereUniqueInput[]
+  update?: Prisma.PetUpdateWithWhereUniqueWithoutUserInput | Prisma.PetUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PetUpdateManyWithWhereWithoutUserInput | Prisma.PetUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PetScalarWhereInput | Prisma.PetScalarWhereInput[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -427,8 +499,111 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type PetCreateWithoutUserInput = {
+  id?: string
+  name: string
+  ownerName: string
+  imageUrl: string
+  age: number
+  notes: string
+  updatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type PetUncheckedCreateWithoutUserInput = {
+  id?: string
+  name: string
+  ownerName: string
+  imageUrl: string
+  age: number
+  notes: string
+  updatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type PetCreateOrConnectWithoutUserInput = {
+  where: Prisma.PetWhereUniqueInput
+  create: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput>
+}
+
+export type PetCreateManyUserInputEnvelope = {
+  data: Prisma.PetCreateManyUserInput | Prisma.PetCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type PetUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.PetWhereUniqueInput
+  update: Prisma.XOR<Prisma.PetUpdateWithoutUserInput, Prisma.PetUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.PetCreateWithoutUserInput, Prisma.PetUncheckedCreateWithoutUserInput>
+}
+
+export type PetUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.PetWhereUniqueInput
+  data: Prisma.XOR<Prisma.PetUpdateWithoutUserInput, Prisma.PetUncheckedUpdateWithoutUserInput>
+}
+
+export type PetUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.PetScalarWhereInput
+  data: Prisma.XOR<Prisma.PetUpdateManyMutationInput, Prisma.PetUncheckedUpdateManyWithoutUserInput>
+}
+
+export type PetScalarWhereInput = {
+  AND?: Prisma.PetScalarWhereInput | Prisma.PetScalarWhereInput[]
+  OR?: Prisma.PetScalarWhereInput[]
+  NOT?: Prisma.PetScalarWhereInput | Prisma.PetScalarWhereInput[]
+  id?: Prisma.StringFilter<"Pet"> | string
+  name?: Prisma.StringFilter<"Pet"> | string
+  ownerName?: Prisma.StringFilter<"Pet"> | string
+  imageUrl?: Prisma.StringFilter<"Pet"> | string
+  age?: Prisma.IntFilter<"Pet"> | number
+  notes?: Prisma.StringFilter<"Pet"> | string
+  userId?: Prisma.StringFilter<"Pet"> | string
+  updatedAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
+}
+
+export type PetCreateManyUserInput = {
+  id?: string
+  name: string
+  ownerName: string
+  imageUrl: string
+  age: number
+  notes: string
+  updatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type PetUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PetUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PetUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -440,8 +615,10 @@ export type PetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   imageUrl?: boolean
   age?: boolean
   notes?: boolean
+  userId?: boolean
   updatedAt?: boolean
   createdAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pet"]>
 
 export type PetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -451,8 +628,10 @@ export type PetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   age?: boolean
   notes?: boolean
+  userId?: boolean
   updatedAt?: boolean
   createdAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pet"]>
 
 export type PetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -462,8 +641,10 @@ export type PetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   age?: boolean
   notes?: boolean
+  userId?: boolean
   updatedAt?: boolean
   createdAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pet"]>
 
 export type PetSelectScalar = {
@@ -473,15 +654,27 @@ export type PetSelectScalar = {
   imageUrl?: boolean
   age?: boolean
   notes?: boolean
+  userId?: boolean
   updatedAt?: boolean
   createdAt?: boolean
 }
 
-export type PetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "ownerName" | "imageUrl" | "age" | "notes" | "updatedAt" | "createdAt", ExtArgs["result"]["pet"]>
+export type PetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "ownerName" | "imageUrl" | "age" | "notes" | "userId" | "updatedAt" | "createdAt", ExtArgs["result"]["pet"]>
+export type PetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type PetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type PetIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $PetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Pet"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -489,6 +682,7 @@ export type $PetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     imageUrl: string
     age: number
     notes: string
+    userId: string
     updatedAt: Date
     createdAt: Date
   }, ExtArgs["result"]["pet"]>
@@ -885,6 +1079,7 @@ readonly fields: PetFieldRefs;
  */
 export interface Prisma__PetClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -920,6 +1115,7 @@ export interface PetFieldRefs {
   readonly imageUrl: Prisma.FieldRef<"Pet", 'String'>
   readonly age: Prisma.FieldRef<"Pet", 'Int'>
   readonly notes: Prisma.FieldRef<"Pet", 'String'>
+  readonly userId: Prisma.FieldRef<"Pet", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Pet", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Pet", 'DateTime'>
 }
@@ -939,6 +1135,10 @@ export type PetFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
+  /**
    * Filter, which Pet to fetch.
    */
   where: Prisma.PetWhereUniqueInput
@@ -957,6 +1157,10 @@ export type PetFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
+  /**
    * Filter, which Pet to fetch.
    */
   where: Prisma.PetWhereUniqueInput
@@ -974,6 +1178,10 @@ export type PetFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Pet
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
   /**
    * Filter, which Pet to fetch.
    */
@@ -1023,6 +1231,10 @@ export type PetFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
+  /**
    * Filter, which Pet to fetch.
    */
   where?: Prisma.PetWhereInput
@@ -1071,6 +1283,10 @@ export type PetFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
+  /**
    * Filter, which Pets to fetch.
    */
   where?: Prisma.PetWhereInput
@@ -1114,6 +1330,10 @@ export type PetCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
+  /**
    * The data needed to create a Pet.
    */
   data: Prisma.XOR<Prisma.PetCreateInput, Prisma.PetUncheckedCreateInput>
@@ -1147,6 +1367,10 @@ export type PetCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    */
   data: Prisma.PetCreateManyInput | Prisma.PetCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1161,6 +1385,10 @@ export type PetUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Pet
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
   /**
    * The data needed to update a Pet.
    */
@@ -1213,6 +1441,10 @@ export type PetUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Pets to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1227,6 +1459,10 @@ export type PetUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Pet
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
   /**
    * The filter to search for the Pet to update in case it exists.
    */
@@ -1253,6 +1489,10 @@ export type PetDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Pet
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
   /**
    * Filter which Pet to delete.
    */
@@ -1285,4 +1525,8 @@ export type PetDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Pet
    */
   omit?: Prisma.PetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PetInclude<ExtArgs> | null
 }

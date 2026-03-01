@@ -10,35 +10,48 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import PetForm from "./pet-form";
-import { useState } from "react";
-import { flushSync } from "react-dom";
+import { usePetContext } from "@/lib/hooks";
 
 type PetButtonProps = {
   actionType: "add" | "edit" | "checkout";
   disabled?: boolean;
-  onClick?: () => void;
   children?: React.ReactNode;
 };
 
 export default function PetButton({
   actionType,
   disabled,
-  onClick,
   children,
 }: PetButtonProps) {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const {
+    isFormOpen,
+    openModal,
+    closeModal,
+    selectedPetId,
+    handleCheckoutPet,
+  } = usePetContext();
 
   if (actionType === "checkout") {
     return (
-      <Button variant="secondary" disabled={disabled} onClick={onClick}>
+      <Button
+        variant="secondary"
+        disabled={disabled}
+        onClick={() => selectedPetId && handleCheckoutPet(selectedPetId)}
+      >
         {children}
       </Button>
     );
   }
 
   return (
-    <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-      <DialogTrigger asChild>
+    <Dialog
+      open={isFormOpen}
+      onOpenChange={(open) => {
+        if (open) openModal();
+        else closeModal();
+      }}
+    >
+      <DialogTrigger asChild onClick={openModal}>
         {actionType === "add" ? (
           <Button size="icon">
             <PlusIcon className="h-6 w-6" />
@@ -55,14 +68,7 @@ export default function PetButton({
           </DialogTitle>
         </DialogHeader>
 
-        <PetForm
-          actionType={actionType}
-          onFormSubmission={() => {
-            flushSync(() => {
-              setIsFormOpen(false);
-            });
-          }}
-        />
+        <PetForm actionType={actionType} />
       </DialogContent>
     </Dialog>
   );

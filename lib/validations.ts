@@ -28,7 +28,7 @@ export const petFormSchema = z.object({
 
   age: z
     .number("Age must be a number")
-    .positive("Age cannot be negative")
+    .positive("Age must be a positive number")
     .max(100, "Age cannot exceed 100"),
 
   notes: z.preprocess(
@@ -42,3 +42,10 @@ export const petFormSchema = z.object({
 
 export type TPetForm = z.input<typeof petFormSchema>; // form input type
 export type TPetFormParsed = z.output<typeof petFormSchema>; // after zod parse
+
+export const authSchema = z.object({
+  email: z.string().email().max(100),
+  password: z.string().max(100),
+});
+
+export type TAuth = z.infer<typeof authSchema>;
