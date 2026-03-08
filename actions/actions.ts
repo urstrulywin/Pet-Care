@@ -8,6 +8,8 @@ import { authSchema, petFormSchema, petIdSchema } from "@/lib/validations";
 import { signIn, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
+import { redirect } from "next/navigation";
+import Stripe from "stripe";
 
 export async function logIn(
   _prevState: unknown,
@@ -33,7 +35,7 @@ export async function logIn(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/app/dashboard",
+      redirectTo: "/payment",
     });
 
     return null;
@@ -85,7 +87,7 @@ export async function signUp(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/app/dashboard",
+      redirectTo: "/payment",
     });
     return null;
   } catch (error) {
@@ -222,4 +224,26 @@ export async function deletePet(
   }
 
   revalidatePath("/app", "layout");
+}
+
+export async function createCheckoutSession() {
+  const session = await checkAuth();
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
+  const checkoutSession = await stripe.checkout.sessions.create({
+    customer_email: session.user.email!,
+    line_items: [
+      {
+        price: process.env.STRIPE_PRICE_ID!,
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    metadata: {
+      userId: session.user.id,
+    },
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?success=true`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?canceled=true`,
+  });
+  redirect(checkoutSession.url!);
 }

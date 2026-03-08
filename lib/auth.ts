@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { getUser } from "./server-utils";
 import { authSchema } from "./validations";
+import { prisma } from "./prisma";
 
 export const {
   auth,
@@ -52,6 +53,7 @@ export const {
         return {
           id: user.id,
           email: user.email,
+          hasAccess: user.hasAccess,
         };
       },
     }),
@@ -61,25 +63,57 @@ export const {
     authorized: ({ auth, request }) => {
       // runs on every request with middleware
       const isLoggedIn = !!auth?.user;
-      const isProtectedRoute = request.nextUrl.pathname.startsWith("/app");
+      const hasAccess = !!auth?.user?.hasAccess;
+      const pathname = request.nextUrl.pathname;
+      const isAppRoute = pathname.startsWith("/app");
 
-      if (!isLoggedIn && isProtectedRoute) {
-        return false;
+      // not logged in
+      if (!isLoggedIn) {
+        return !isAppRoute;
+      }
+
+      // no access
+      if (!hasAccess) {
+        if (pathname.includes("/login") || pathname.includes("/signup")) {
+          return Response.redirect(new URL("/payment", request.nextUrl));
+        }
+        return true;
+      }
+
+      // prevent paid users from seeing auth pages
+      if (pathname.includes("/login") || pathname.includes("/signup")) {
+        return Response.redirect(new URL("/app/dashboard", request.url));
+      }
+
+      if (hasAccess && pathname === "/payment") {
+        return Response.redirect(new URL("/app/dashboard", request.url));
       }
 
       return true;
     },
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, trigger }) => {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.hasAccess = user.hasAccess;
+      }
+      if (trigger === "update") {
+        const userFromDb = await prisma.user.findUnique({
+          where: { id: token.id as string },
+        });
+        console.log("JWT update triggered");
+        console.log("DB hasAccess:", userFromDb?.hasAccess);
+
+        if (userFromDb) {
+          token.hasAccess = userFromDb.hasAccess;
+        }
       }
       return token;
     },
     session: async ({ session, token }) => {
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
+      session.user.hasAccess = token.hasAccess as boolean;
       return session;
     },
   },
