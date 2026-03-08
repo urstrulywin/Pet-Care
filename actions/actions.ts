@@ -229,6 +229,12 @@ export async function deletePet(
 export async function createCheckoutSession() {
   const session = await checkAuth();
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (!baseUrl) {
+    throw new Error("NEXT_PUBLIC_BASE_URL is missing");
+  }
+  console.log("BASE URL:", baseUrl);
 
   const checkoutSession = await stripe.checkout.sessions.create({
     customer_email: session.user.email!,
@@ -242,8 +248,8 @@ export async function createCheckoutSession() {
     metadata: {
       userId: session.user.id,
     },
-    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?success=true`,
-    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?canceled=true`,
+    success_url: `${baseUrl}/payment?success=true`,
+    cancel_url: `${baseUrl}/payment?canceled=true`,
   });
   redirect(checkoutSession.url!);
 }
