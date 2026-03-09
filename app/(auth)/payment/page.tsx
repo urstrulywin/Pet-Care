@@ -13,26 +13,19 @@ export default function Payment() {
   const { data: session, update, status } = useSession();
   const searchParams = useSearchParams();
   const success = searchParams.get("success");
-  const cancelled = searchParams.get("cancelled");
+  const canceled = searchParams.get("canceled");
 
   useEffect(() => {
     if (success) {
       update();
     }
   }, [success, update]);
-
-  useEffect(() => {
-    if (session?.user?.hasAccess) {
-      router.replace("/app/dashboard");
-    }
-  }, [session]);
-
   return (
     <main className="flex flex-col items-center justify-center gap-6 pt-10">
       <H1>PetCare access requires payment</H1>
       {success && (
         <Button
-          disabled={status === "loading"}
+          disabled={isPending}
           onClick={async () => {
             await update();
             router.replace("/app/dashboard");
@@ -62,7 +55,7 @@ export default function Payment() {
           </p>
         </div>
       )}
-      {cancelled && (
+      {canceled && (
         <div className="rounded-full font-medium bg-red-100 p-4">
           <p className="text-red-600">
             Payment cancelled. You can try again to get access to PetCare.

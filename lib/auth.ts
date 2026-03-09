@@ -62,31 +62,28 @@ export const {
   callbacks: {
     authorized: ({ auth, request }) => {
       // runs on every request with middleware
+      const pathname = request.nextUrl.pathname;
+
       const isLoggedIn = !!auth?.user;
       const hasAccess = !!auth?.user?.hasAccess;
-      const pathname = request.nextUrl.pathname;
-      const isAppRoute = pathname.startsWith("/app");
 
-      // not logged in
+      const isAppRoute = pathname.startsWith("/app");
+      const isAuthPage =
+        pathname.startsWith("/login") || pathname.startsWith("/signup");
+
+      // user not logged in
       if (!isLoggedIn) {
         return !isAppRoute;
       }
 
-      // no access
-      if (!hasAccess) {
-        if (pathname.includes("/login") || pathname.includes("/signup")) {
-          return Response.redirect(new URL("/payment", request.nextUrl));
-        }
-        return true;
+      // unpaid user accessing protected routes
+      if (!hasAccess && isAppRoute) {
+        return Response.redirect(new URL("/payment", request.nextUrl));
       }
 
-      // prevent paid users from seeing auth pages
-      if (pathname.includes("/login") || pathname.includes("/signup")) {
-        return Response.redirect(new URL("/app/dashboard", request.url));
-      }
-
-      if (hasAccess && pathname === "/payment") {
-        return Response.redirect(new URL("/app/dashboard", request.url));
+      // paid user should not see auth pages or payment
+      if (hasAccess && (isAuthPage || pathname === "/payment")) {
+        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
       }
 
       return true;

@@ -3,5 +3,5 @@ import { auth } from "./lib/auth";
 export default auth;
 
 export const config = {
-  matcher: ["/app/:path*", "/payment"],
+  matcher: ["/app/:path*"],
 };

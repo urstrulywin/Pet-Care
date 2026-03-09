@@ -35,7 +35,7 @@ export async function logIn(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/payment",
+      redirectTo: "/app/dashboard",
     });
 
     return null;
@@ -87,7 +87,7 @@ export async function signUp(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/payment",
+      redirectTo: "/app/dashboard",
     });
     return null;
   } catch (error) {
