@@ -77,7 +77,7 @@ export const {
       }
 
       // unpaid user accessing protected routes
-      if (!hasAccess && isAppRoute) {
+      if (isLoggedIn && !hasAccess && isAppRoute && pathname !== "/payment") {
         return Response.redirect(new URL("/payment", request.nextUrl));
       }
 
@@ -94,9 +94,11 @@ export const {
         token.email = user.email;
         token.hasAccess = user.hasAccess;
       }
-      if (trigger === "update") {
+      // Always refresh if token already exists
+      if (token.id && !user) {
         const userFromDb = await prisma.user.findUnique({
           where: { id: token.id as string },
+          select: { hasAccess: true },
         });
         console.log("JWT update triggered");
         console.log("DB hasAccess:", userFromDb?.hasAccess);

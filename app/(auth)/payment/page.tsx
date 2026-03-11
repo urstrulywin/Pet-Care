@@ -4,32 +4,28 @@ import { createCheckoutSession } from "@/actions/actions";
 import H1 from "@/components/h1";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useTransition } from "react";
 import { useSession } from "next-auth/react";
+import { useTransition } from "react";
 
 export default function Payment() {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const { data: session, update, status } = useSession();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
   const success = searchParams.get("success");
   const canceled = searchParams.get("canceled");
 
-  useEffect(() => {
-    if (success) {
-      update();
-    }
-  }, [success, update]);
   return (
     <main className="flex flex-col items-center justify-center gap-6 pt-10">
       <H1>PetCare access requires payment</H1>
       {success && (
         <Button
-          disabled={isPending}
           onClick={async () => {
-            await update();
-            router.replace("/app/dashboard");
+            await update(true);
+            router.push("/app/dashboard");
           }}
+          disabled={status === "loading" || session?.user.hasAccess}
         >
           Access PetCare Dashboard
         </Button>
@@ -37,8 +33,8 @@ export default function Payment() {
       {!success && (
         <Button
           className="rounded-full"
-          disabled={isPending}
           size="lg"
+          disabled={isPending}
           onClick={async () => {
             startTransition(async () => {
               await createCheckoutSession();

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pet Soft - Pet Daycare Software",
+  title: "Pet Care - Pet Daycare Software",
   description: "",
 };
 
