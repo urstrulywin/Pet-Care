@@ -41,7 +41,12 @@ export async function logIn(
     return null;
   } catch (error) {
     if (error instanceof AuthError) {
-      return "Invalid email or password.";
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials!";
+        default:
+          return "Something went wrong!";
+      }
     }
     throw error; // Preserve redirect and unexpected errors
   }
@@ -92,7 +97,12 @@ export async function signUp(
     return null;
   } catch (error) {
     if (error instanceof AuthError) {
-      return "Invalid email or password.";
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials!";
+        default:
+          return "Something went wrong!";
+      }
     }
     throw error; // Preserve redirect and unexpected errors
   }

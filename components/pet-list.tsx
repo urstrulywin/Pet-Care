@@ -10,8 +10,11 @@ export default function PetList() {
   const { searchQuery } = useSearchContext();
 
   const filteredPets = useMemo(
-    () => pets.filter((pet) => pet.name.toLowerCase().includes(searchQuery)),
-    [pets, searchQuery]
+    () =>
+      pets.filter((pet) =>
+        pet.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [pets, searchQuery],
   );
 
   return (
@@ -24,7 +27,7 @@ export default function PetList() {
               "flex items-center h-20 w-full cursor-pointer px-5 text-base gap-3 hover:bg-[#EFF1F2] focus:bg-[#EFF1F2] transition",
               {
                 "bg-[#EFF1F2]": selectedPetId === pet.id,
-              }
+              },
             )}
           >
             <Image

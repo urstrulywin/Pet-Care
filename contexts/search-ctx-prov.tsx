@@ -2,7 +2,7 @@
 
 import { createContext, useState } from "react";
 
-type SearchContextProvider = {
+type SearchContextProviderProps = {
   children: React.ReactNode;
 };
 
@@ -15,7 +15,7 @@ export const SearchContext = createContext<TSearchContext | null>(null);
 
 export default function SearchContextProvider({
   children,
-}: SearchContextProvider) {
+}: SearchContextProviderProps) {
   // state
   const [searchQuery, setSearchQuery] = useState("");
 

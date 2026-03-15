@@ -25,7 +25,8 @@ export default function PetButton({
 }: PetButtonProps) {
   const {
     isFormOpen,
-    openModal,
+    openAddModal,
+    openEditModal,
     closeModal,
     selectedPetId,
     handleCheckoutPet,
@@ -47,17 +48,21 @@ export default function PetButton({
     <Dialog
       open={isFormOpen}
       onOpenChange={(open) => {
-        if (open) openModal();
-        else closeModal();
+        if (open) {
+          if (actionType === "add") openAddModal();
+          else if (actionType === "edit") openEditModal();
+        } else closeModal();
       }}
     >
-      <DialogTrigger asChild onClick={openModal}>
+      <DialogTrigger asChild>
         {actionType === "add" ? (
           <Button size="icon">
             <PlusIcon className="h-6 w-6" />
           </Button>
         ) : (
-          <Button variant="secondary">{children}</Button>
+          <Button variant="secondary" disabled={!selectedPetId}>
+            {children}
+          </Button>
         )}
       </DialogTrigger>
 

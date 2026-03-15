@@ -17,7 +17,8 @@ type TPetContext = {
   selectedPet: Pet | undefined;
   numberOfPets: number;
   isFormOpen: boolean;
-  openModal: () => void;
+  openAddModal: () => void;
+  openEditModal: () => void;
   closeModal: () => void;
   handleAddPet: (newPet: PetEssentials) => Promise<void>;
   handleEditPet: (petId: Pet["id"], newPetData: PetEssentials) => Promise<void>;
@@ -56,7 +57,14 @@ export default function PetContextProvider({
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // helpers
-  const openModal = () => setIsFormOpen(true);
+  const openAddModal = () => {
+    setSelectedPetId(null);
+    setIsFormOpen(true);
+  };
+
+  const openEditModal = () => {
+    setIsFormOpen(true);
+  };
   const closeModal = () => setIsFormOpen(false);
 
   // derived state
@@ -114,7 +122,8 @@ export default function PetContextProvider({
         selectedPet,
         numberOfPets,
         isFormOpen,
-        openModal,
+        openAddModal,
+        openEditModal,
         closeModal,
         handleAddPet,
         handleEditPet,
