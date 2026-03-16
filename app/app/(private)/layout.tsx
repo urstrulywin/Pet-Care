@@ -25,7 +25,7 @@ export default async function Layout({
 
         <SearchContextProvider>
           <PetContextProvider data={pets}>
-            {children}
+            <main className="flex-1 overflow-auto">{children}</main>
             <PetDialog />
           </PetContextProvider>
         </SearchContextProvider>
