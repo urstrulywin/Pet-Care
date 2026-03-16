@@ -18,12 +18,20 @@ export default function PetForm({ actionType }: PetFormProps) {
   const { handleAddPet, handleEditPet, selectedPet, closeModal } =
     usePetContext();
 
+  const onSubmit = async (data: z.output<typeof petFormSchema>) => {
+    closeModal();
+
+    if (actionType === "add") {
+      await handleAddPet(data);
+    } else {
+      await handleEditPet(selectedPet!.id, data);
+    }
+  };
   const {
     register,
-    trigger,
-    getValues,
+    handleSubmit,
     formState: { errors },
-  } = useForm<z.input<typeof petFormSchema>, z.output<typeof petFormSchema>>({
+  } = useForm({
     resolver: zodResolver(petFormSchema),
     defaultValues:
       actionType === "edit"
@@ -36,25 +44,44 @@ export default function PetForm({ actionType }: PetFormProps) {
           }
         : undefined,
   });
+  // const {
+  //   register,
+  //   trigger,
+  //   getValues,
+  //   formState: { errors },
+  // } = useForm<z.input<typeof petFormSchema>, z.output<typeof petFormSchema>>({
+  //   resolver: zodResolver(petFormSchema),
+  //   defaultValues:
+  //     actionType === "edit"
+  //       ? {
+  //           name: selectedPet?.name || "",
+  //           ownerName: selectedPet?.ownerName || "",
+  //           imageUrl: selectedPet?.imageUrl || "",
+  //           age: selectedPet?.age ?? undefined,
+  //           notes: selectedPet?.notes || "",
+  //         }
+  //       : undefined,
+  // });
 
   return (
-    <form
-      action={async () => {
-        const result = await trigger();
-        if (!result) return;
+    // <form
+    //   action={async () => {
+    //     const result = await trigger();
+    //     if (!result) return;
 
-        closeModal();
+    //     closeModal();
 
-        const petData = petFormSchema.parse(getValues());
+    //     const petData = petFormSchema.parse(getValues());
 
-        if (actionType === "add") {
-          await handleAddPet(petData);
-        } else if (actionType === "edit") {
-          await handleEditPet(selectedPet!.id, petData);
-        }
-      }}
-      className="flex flex-col"
-    >
+    //     if (actionType === "add") {
+    //       await handleAddPet(petData);
+    //     } else if (actionType === "edit") {
+    //       await handleEditPet(selectedPet!.id, petData);
+    //     }
+    //   }}
+    //   className="flex flex-col"
+    // >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
