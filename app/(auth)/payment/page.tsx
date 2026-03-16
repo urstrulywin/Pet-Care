@@ -33,7 +33,6 @@ export default function Payment() {
       {!success && (
         <Button
           className="rounded-full"
-          size="lg"
           disabled={isPending}
           onClick={async () => {
             startTransition(async () => {
