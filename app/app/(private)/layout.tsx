@@ -1,6 +1,7 @@
 import Background from "@/components/background";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import PetDialog from "@/components/pet-dialog";
 import { Toaster } from "@/components/ui/sonner";
 import PetContextProvider from "@/contexts/pet-ctx-prov";
 import SearchContextProvider from "@/contexts/search-ctx-prov";
@@ -23,7 +24,10 @@ export default async function Layout({
         <Header />
 
         <SearchContextProvider>
-          <PetContextProvider data={pets}>{children}</PetContextProvider>
+          <PetContextProvider data={pets}>
+            {children}
+            <PetDialog />
+          </PetContextProvider>
         </SearchContextProvider>
 
         <Footer />

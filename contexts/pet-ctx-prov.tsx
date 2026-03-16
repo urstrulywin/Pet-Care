@@ -17,6 +17,7 @@ type TPetContext = {
   selectedPet: Pet | undefined;
   numberOfPets: number;
   isFormOpen: boolean;
+  formMode: "add" | "edit" | null;
   openAddModal: () => void;
   openEditModal: () => void;
   closeModal: () => void;
@@ -55,17 +56,24 @@ export default function PetContextProvider({
   );
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState<"add" | "edit" | null>(null);
 
   // helpers
   const openAddModal = () => {
     setSelectedPetId(null);
+    setFormMode("add");
     setIsFormOpen(true);
   };
 
   const openEditModal = () => {
+    setFormMode("edit");
     setIsFormOpen(true);
   };
-  const closeModal = () => setIsFormOpen(false);
+
+  const closeModal = () => {
+    setIsFormOpen(false);
+    setFormMode(null);
+  };
 
   // derived state
   const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetId);
@@ -122,6 +130,7 @@ export default function PetContextProvider({
         selectedPet,
         numberOfPets,
         isFormOpen,
+        formMode,
         openAddModal,
         openEditModal,
         closeModal,
